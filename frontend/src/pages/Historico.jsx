@@ -61,7 +61,7 @@ function Historico() {
 
   if (carregando) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         <p className="text-gray-500">
           Carregando histórico...
         </p>
@@ -70,24 +70,24 @@ function Historico() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       {/* Cabeçalho */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl font-bold text-gray-900">
           Histórico
         </h1>
 
-        <p className="mt-1 text-gray-500">
+        <p className="mt-1 text-sm sm:text-base text-gray-500">
           Consulte as movimentações de estoque e vendas realizadas
         </p>
       </div>
 
       {/* Movimentações de estoque */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="px-4 sm:px-6 py-5 border-b border-gray-200">
+          <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <div className="w-10 h-10 shrink-0 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
                 <FiClipboard size={20} />
               </div>
 
@@ -103,10 +103,10 @@ function Historico() {
             </div>
 
             {/* Filtros */}
-            <div className="flex gap-2">
+            <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
               <button
                 onClick={() => setFiltro("todos")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-3 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition ${
                   filtro === "todos"
                     ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -117,7 +117,7 @@ function Historico() {
 
               <button
                 onClick={() => setFiltro("entrada")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-3 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition ${
                   filtro === "entrada"
                     ? "bg-green-600 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -128,7 +128,7 @@ function Historico() {
 
               <button
                 onClick={() => setFiltro("saida")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-3 sm:px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition ${
                   filtro === "saida"
                     ? "bg-red-600 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -141,7 +141,7 @@ function Historico() {
         </div>
 
         {movimentacoesFiltradas.length === 0 ? (
-          <div className="p-10 text-center">
+          <div className="p-8 sm:p-10 text-center">
             <FiClipboard
               size={30}
               className="mx-auto text-gray-300 mb-3"
@@ -152,101 +152,196 @@ function Historico() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200 bg-gray-50 text-left">
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Data
-                  </th>
+          <>
+            {/* Desktop */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50 text-left">
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Data
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Produto
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Produto
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Tipo
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Tipo
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Quantidade
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Quantidade
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Fornecedor
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Fornecedor
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Observação
-                  </th>
-                </tr>
-              </thead>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Observação
+                    </th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {movimentacoesFiltradas.map(
-                  (movimentacao) => (
-                    <tr
-                      key={movimentacao._id}
-                      className="border-b border-gray-100 last:border-0"
-                    >
-                      <td className="px-6 py-4 text-gray-500">
-                        {formatarData(
-                          movimentacao.createdAt
-                        )}
-                      </td>
+                <tbody>
+                  {movimentacoesFiltradas.map(
+                    (movimentacao) => (
+                      <tr
+                        key={movimentacao._id}
+                        className="border-b border-gray-100 last:border-0 hover:bg-gray-50"
+                      >
+                        <td className="px-6 py-4 text-gray-500">
+                          {formatarData(
+                            movimentacao.createdAt
+                          )}
+                        </td>
 
-                      <td className="px-6 py-4">
-                        <p className="font-medium text-gray-900">
-                          {movimentacao.produto?.nome ||
-                            "Produto removido"}
-                        </p>
+                        <td className="px-6 py-4">
+                          <p className="font-medium text-gray-900">
+                            {movimentacao.produto?.nome ||
+                              "Produto removido"}
+                          </p>
 
-                        <p className="text-xs text-gray-400 mt-1">
-                          {movimentacao.produto?.categoria ||
+                          <p className="text-xs text-gray-400 mt-1">
+                            {movimentacao.produto?.categoria ||
+                              "-"}
+                          </p>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          {movimentacao.tipo ===
+                          "entrada" ? (
+                            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                              <FiArrowDown size={13} />
+                              Entrada
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700">
+                              <FiArrowUp size={13} />
+                              Saída
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="px-6 py-4 font-semibold text-gray-900">
+                          {movimentacao.quantidade}
+                        </td>
+
+                        <td className="px-6 py-4 text-gray-500">
+                          {movimentacao.fornecedor?.nome ||
                             "-"}
-                        </p>
-                      </td>
+                        </td>
 
-                      <td className="px-6 py-4">
-                        {movimentacao.tipo === "entrada" ? (
-                          <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                        <td className="px-6 py-4 text-gray-500">
+                          {movimentacao.observacao || "-"}
+                        </td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {movimentacoesFiltradas.map(
+                (movimentacao) => {
+                  const entrada =
+                    movimentacao.tipo === "entrada";
+
+                  return (
+                    <div
+                      key={movimentacao._id}
+                      className="p-4"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900 truncate">
+                            {movimentacao.produto?.nome ||
+                              "Produto removido"}
+                          </p>
+
+                          <p className="text-xs text-gray-400 mt-1">
+                            {movimentacao.produto?.categoria ||
+                              "-"}
+                          </p>
+                        </div>
+
+                        {entrada ? (
+                          <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
                             <FiArrowDown size={13} />
                             Entrada
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700">
+                          <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">
                             <FiArrowUp size={13} />
                             Saída
                           </span>
                         )}
-                      </td>
+                      </div>
 
-                      <td className="px-6 py-4 font-semibold text-gray-900">
-                        {movimentacao.quantidade}
-                      </td>
+                      <div className="grid grid-cols-2 gap-3 mt-4">
+                        <div className="rounded-lg bg-gray-50 p-3">
+                          <p className="text-xs text-gray-400">
+                            Quantidade
+                          </p>
 
-                      <td className="px-6 py-4 text-gray-500">
-                        {movimentacao.fornecedor?.nome ||
-                          "-"}
-                      </td>
+                          <p className="text-lg font-bold text-gray-900 mt-1">
+                            {movimentacao.quantidade}
+                          </p>
+                        </div>
 
-                      <td className="px-6 py-4 text-gray-500">
-                        {movimentacao.observacao || "-"}
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
+                        <div className="rounded-lg bg-gray-50 p-3">
+                          <p className="text-xs text-gray-400">
+                            Data
+                          </p>
+
+                          <p className="text-sm font-medium text-gray-700 mt-1">
+                            {formatarData(
+                              movimentacao.createdAt
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 space-y-2">
+                        <div>
+                          <p className="text-xs text-gray-400">
+                            Fornecedor
+                          </p>
+
+                          <p className="text-sm text-gray-700 mt-0.5">
+                            {movimentacao.fornecedor?.nome ||
+                              "-"}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-xs text-gray-400">
+                            Observação
+                          </p>
+
+                          <p className="text-sm text-gray-700 mt-0.5 break-words">
+                            {movimentacao.observacao ||
+                              "-"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </>
         )}
       </div>
 
       {/* Vendas */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mt-6">
-        <div className="px-6 py-5 border-b border-gray-200">
+        <div className="px-4 sm:px-6 py-5 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+            <div className="w-10 h-10 shrink-0 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
               <FiShoppingCart size={20} />
             </div>
 
@@ -263,7 +358,7 @@ function Historico() {
         </div>
 
         {vendas.length === 0 ? (
-          <div className="p-10 text-center">
+          <div className="p-8 sm:p-10 text-center">
             <FiShoppingCart
               size={30}
               className="mx-auto text-gray-300 mb-3"
@@ -274,83 +369,166 @@ function Historico() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200 bg-gray-50 text-left">
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Data
-                  </th>
+          <>
+            {/* Desktop */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50 text-left">
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Data
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Produtos
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Produtos
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Quantidade
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Quantidade
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Total
-                  </th>
-                </tr>
-              </thead>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Total
+                    </th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {vendas.map((venda) => {
-                  const quantidadeTotal =
-                    venda.itens.reduce(
-                      (total, item) =>
-                        total + item.quantidade,
-                      0
-                    );
+                <tbody>
+                  {vendas.map((venda) => {
+                    const quantidadeTotal =
+                      venda.itens.reduce(
+                        (total, item) =>
+                          total + item.quantidade,
+                        0
+                      );
 
-                  return (
-                    <tr
-                      key={venda._id}
-                      className="border-b border-gray-100 last:border-0"
-                    >
-                      <td className="px-6 py-4 text-gray-500">
-                        {formatarData(venda.createdAt)}
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <div className="space-y-1">
-                          {venda.itens.map(
-                            (item, index) => (
-                              <div
-                                key={index}
-                                className="text-gray-900"
-                              >
-                                <span className="font-medium">
-                                  {item.produto?.nome ||
-                                    "Produto removido"}
-                                </span>
-
-                                <span className="text-gray-400 ml-2">
-                                  {item.quantidade}x
-                                </span>
-                              </div>
-                            )
+                    return (
+                      <tr
+                        key={venda._id}
+                        className="border-b border-gray-100 last:border-0 hover:bg-gray-50"
+                      >
+                        <td className="px-6 py-4 text-gray-500">
+                          {formatarData(
+                            venda.createdAt
                           )}
-                        </div>
-                      </td>
+                        </td>
 
-                      <td className="px-6 py-4 font-medium text-gray-900">
-                        {quantidadeTotal}
-                      </td>
+                        <td className="px-6 py-4">
+                          <div className="space-y-1">
+                            {venda.itens.map(
+                              (item, index) => (
+                                <div
+                                  key={index}
+                                  className="text-gray-900"
+                                >
+                                  <span className="font-medium">
+                                    {item.produto?.nome ||
+                                      "Produto removido"}
+                                  </span>
 
-                      <td className="px-6 py-4">
-                        <span className="font-semibold text-green-600">
-                          {formatarPreco(venda.total)}
-                        </span>
-                      </td>
-                    </tr>
+                                  <span className="text-gray-400 ml-2">
+                                    {item.quantidade}x
+                                  </span>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </td>
+
+                        <td className="px-6 py-4 font-medium text-gray-900">
+                          {quantidadeTotal}
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="font-semibold text-green-600">
+                            {formatarPreco(venda.total)}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {vendas.map((venda) => {
+                const quantidadeTotal =
+                  venda.itens.reduce(
+                    (total, item) =>
+                      total + item.quantidade,
+                    0
                   );
-                })}
-              </tbody>
-            </table>
-          </div>
+
+                return (
+                  <div
+                    key={venda._id}
+                    className="p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs text-gray-400">
+                          Data da venda
+                        </p>
+
+                        <p className="text-sm font-medium text-gray-700 mt-1">
+                          {formatarData(
+                            venda.createdAt
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-xs text-gray-400">
+                          Total
+                        </p>
+
+                        <p className="text-lg font-bold text-green-600 mt-1">
+                          {formatarPreco(venda.total)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 rounded-lg bg-gray-50 p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs text-gray-400">
+                          Produtos
+                        </p>
+
+                        <p className="text-xs font-medium text-gray-500">
+                          {quantidadeTotal}{" "}
+                          {quantidadeTotal === 1
+                            ? "item"
+                            : "itens"}
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        {venda.itens.map(
+                          (item, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between gap-3"
+                            >
+                              <span className="text-sm font-medium text-gray-800 truncate">
+                                {item.produto?.nome ||
+                                  "Produto removido"}
+                              </span>
+
+                              <span className="shrink-0 text-sm text-gray-500">
+                                {item.quantidade}x
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>
