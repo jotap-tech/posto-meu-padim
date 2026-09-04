@@ -58,25 +58,19 @@ const login = async (req, res) => {
 // DIAGNÓSTICO TEMPORÁRIO
 const testeLogin = async (req, res) => {
   try {
-    const usuario = await Usuario.findOne({ usuario: "admin" });
+    const mongoose = require("mongoose");
 
-    if (!usuario) {
-      return res.status(200).json({
-        encontrado: false,
-        senhaCorreta: false,
-        banco: require("mongoose").connection.name,
-      });
-    }
-
-    const senhaCorreta = await bcrypt.compare(
-      "123456",
-      usuario.senha
-    );
+    const usuario = await Usuario.findOne({
+      usuario: "admin",
+    });
 
     return res.status(200).json({
-      encontrado: true,
-      senhaCorreta,
-      banco: require("mongoose").connection.name,
+      encontrado: !!usuario,
+      senhaCorreta: usuario
+        ? await bcrypt.compare("123456", usuario.senha)
+        : false,
+      banco: mongoose.connection.name,
+      servidor: mongoose.connection.host,
     });
   } catch (error) {
     return res.status(500).json({
