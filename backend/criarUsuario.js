@@ -11,12 +11,16 @@ const criarUsuario = async () => {
 
     const senhaHash = await bcrypt.hash("123456", 10);
 
+    await Usuario.deleteMany({
+      usuario: "admin",
+    });
+
     await Usuario.create({
       usuario: "admin",
       senha: senhaHash,
     });
 
-    console.log("Usuário criado com sucesso!");
+    console.log("Usuário admin criado com sucesso!");
 
     await mongoose.disconnect();
   } catch (error) {

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-
+const mongoose = require("mongoose");
 const connectDB = require("./config/database");
 const produtoRoutes = require("./routes/produtoRoutes");
 const movimentacaoRoutes = require("./routes/movimentacaoRoutes");
@@ -16,6 +16,11 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
+
+mongoose.connection.on("connected", () => {
+  console.log("Banco usado pelo servidor:", mongoose.connection.name);
+});
+
 
 app.use("/api/produtos", produtoRoutes);
 app.use("/api/movimentacoes", movimentacaoRoutes);
