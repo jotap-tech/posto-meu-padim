@@ -392,7 +392,7 @@ function Vendas() {
 
   if (carregando) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         <p className="text-gray-500">
           Carregando produtos...
         </p>
@@ -401,7 +401,7 @@ function Vendas() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <Toast
         aberto={toast.aberto}
         tipo={toast.tipo}
@@ -409,12 +409,12 @@ function Vendas() {
       />
 
       {/* Cabeçalho */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl font-bold text-gray-900">
           Vendas
         </h1>
 
-        <p className="mt-1 text-gray-500">
+        <p className="mt-1 text-sm sm:text-base text-gray-500">
           Registre as vendas e dê baixa automaticamente no estoque
         </p>
       </div>
@@ -422,9 +422,9 @@ function Vendas() {
       {/* Área principal */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Adicionar produto */}
-        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6">
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div className="w-10 h-10 shrink-0 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <FiShoppingCart size={20} />
             </div>
 
@@ -473,7 +473,7 @@ function Vendas() {
 
               {/* Lista de produtos */}
               {buscaFocada && (
-                <div className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                <div className="absolute left-0 right-0 z-20 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
                   <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                       {busca.trim() === ""
@@ -499,10 +499,10 @@ function Vendas() {
                                 produto
                               )
                             }
-                            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-0 transition"
+                            className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-0 transition"
                           >
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">
                                 {produto.nome}
                               </p>
 
@@ -511,7 +511,7 @@ function Vendas() {
                               </p>
                             </div>
 
-                            <div className="text-right">
+                            <div className="text-left sm:text-right shrink-0">
                               <p className="text-sm font-semibold text-gray-900">
                                 {formatarPreco(
                                   produto.preco
@@ -540,9 +540,9 @@ function Vendas() {
               </label>
 
               <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="font-semibold text-gray-900">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-gray-900 break-words">
                       {produtoSelecionado.nome}
                     </p>
 
@@ -562,7 +562,7 @@ function Vendas() {
                     onClick={
                       limparProdutoSelecionado
                     }
-                    className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-gray-600 transition"
+                    className="shrink-0 w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-gray-600 transition"
                   >
                     <FiX size={18} />
                   </button>
@@ -577,7 +577,7 @@ function Vendas() {
               Quantidade
             </label>
 
-            <div className="flex items-center max-w-xs">
+            <div className="flex items-center w-full sm:max-w-xs">
               <button
                 type="button"
                 onClick={
@@ -586,7 +586,7 @@ function Vendas() {
                 disabled={
                   Number(quantidade) <= 1
                 }
-                className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-l-lg text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="w-12 h-12 shrink-0 flex items-center justify-center border border-gray-300 rounded-l-lg text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 <FiMinus size={18} />
               </button>
@@ -611,7 +611,7 @@ function Vendas() {
                   Number(quantidade) >=
                     produtoSelecionado.quantidade
                 }
-                className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-r-lg text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="w-12 h-12 shrink-0 flex items-center justify-center border border-gray-300 rounded-r-lg text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 <FiPlus size={18} />
               </button>
@@ -630,7 +630,7 @@ function Vendas() {
         </div>
 
         {/* Resumo */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 h-fit">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 h-fit">
           <h2 className="text-lg font-semibold text-gray-900">
             Resumo da venda
           </h2>
@@ -658,12 +658,12 @@ function Vendas() {
           </div>
 
           <div className="border-t border-gray-200 mt-5 pt-5">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <span className="text-gray-500">
                 Total
               </span>
 
-              <span className="text-2xl font-bold text-gray-900">
+              <span className="text-xl sm:text-2xl font-bold text-gray-900 text-right">
                 {formatarPreco(
                   calcularTotal()
                 )}
@@ -693,14 +693,14 @@ function Vendas() {
 
       {/* Carrinho */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mt-6">
-        <div className="px-6 py-5 border-b border-gray-200">
+        <div className="px-4 sm:px-6 py-5 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">
             Carrinho
           </h2>
         </div>
 
         {carrinho.length === 0 ? (
-          <div className="p-10 text-center">
+          <div className="p-8 sm:p-10 text-center">
             <FiShoppingCart
               size={30}
               className="mx-auto text-gray-300 mb-3"
@@ -711,47 +711,139 @@ function Vendas() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200 bg-gray-50 text-left">
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Produto
-                  </th>
+          <>
+            {/* Desktop */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50 text-left">
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Produto
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Preço
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Preço
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Quantidade
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Quantidade
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Subtotal
-                  </th>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Subtotal
+                    </th>
 
-                  <th className="px-6 py-4 font-medium text-gray-500">
-                    Ação
-                  </th>
-                </tr>
-              </thead>
+                    <th className="px-6 py-4 font-medium text-gray-500">
+                      Ação
+                    </th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {carrinho.map((item) => (
-                  <tr
-                    key={item.produtoId}
-                    className="border-b border-gray-100 last:border-0"
-                  >
-                    <td className="px-6 py-4 font-medium text-gray-900">
-                      {item.nome}
-                    </td>
+                <tbody>
+                  {carrinho.map((item) => (
+                    <tr
+                      key={item.produtoId}
+                      className="border-b border-gray-100 last:border-0 hover:bg-gray-50"
+                    >
+                      <td className="px-6 py-4 font-medium text-gray-900">
+                        {item.nome}
+                      </td>
 
-                    <td className="px-6 py-4 text-gray-500">
-                      {formatarPreco(item.preco)}
-                    </td>
+                      <td className="px-6 py-4 text-gray-500">
+                        {formatarPreco(item.preco)}
+                      </td>
 
-                    <td className="px-6 py-4">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() =>
+                              diminuirQuantidade(
+                                item.produtoId
+                              )
+                            }
+                            className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
+                          >
+                            <FiMinus size={14} />
+                          </button>
+
+                          <span className="w-8 text-center font-medium text-gray-900">
+                            {item.quantidade}
+                          </span>
+
+                          <button
+                            onClick={() =>
+                              aumentarQuantidade(
+                                item.produtoId
+                              )
+                            }
+                            className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
+                          >
+                            <FiPlus size={14} />
+                          </button>
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-4 font-semibold text-gray-900">
+                        {formatarPreco(
+                          item.subtotal
+                        )}
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() =>
+                            removerProduto(
+                              item.produtoId
+                            )
+                          }
+                          className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-600 transition"
+                        >
+                          <FiTrash2 size={17} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden divide-y divide-gray-100">
+              {carrinho.map((item) => (
+                <div
+                  key={item.produtoId}
+                  className="p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 break-words">
+                        {item.nome}
+                      </p>
+
+                      <p className="text-sm text-gray-500 mt-1">
+                        {formatarPreco(item.preco)}
+                        {" "}por unidade
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        removerProduto(
+                          item.produtoId
+                        )
+                      }
+                      className="shrink-0 w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      <FiTrash2 size={17} />
+                    </button>
+                  </div>
+
+                  <div className="flex items-end justify-between gap-4 mt-4">
+                    <div>
+                      <p className="text-xs text-gray-400 mb-2">
+                        Quantidade
+                      </p>
+
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() =>
@@ -759,12 +851,12 @@ function Vendas() {
                               item.produtoId
                             )
                           }
-                          className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
+                          className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
                         >
-                          <FiMinus size={14} />
+                          <FiMinus size={15} />
                         </button>
 
-                        <span className="w-8 text-center font-medium text-gray-900">
+                        <span className="w-8 text-center font-semibold text-gray-900">
                           {item.quantidade}
                         </span>
 
@@ -774,44 +866,37 @@ function Vendas() {
                               item.produtoId
                             )
                           }
-                          className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
+                          className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
                         >
-                          <FiPlus size={14} />
+                          <FiPlus size={15} />
                         </button>
                       </div>
-                    </td>
+                    </div>
 
-                    <td className="px-6 py-4 font-semibold text-gray-900">
-                      {formatarPreco(
-                        item.subtotal
-                      )}
-                    </td>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-400">
+                        Subtotal
+                      </p>
 
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() =>
-                          removerProduto(
-                            item.produtoId
-                          )
-                        }
-                        className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-600 transition"
-                      >
-                        <FiTrash2 size={17} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      <p className="text-lg font-bold text-gray-900 mt-1">
+                        {formatarPreco(
+                          item.subtotal
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
       {/* Modal de confirmação */}
       {modalAberto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
-          <div className="w-full max-w-md rounded-xl bg-white shadow-xl">
-            <div className="flex items-center justify-between border-b border-gray-200 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-3 sm:p-4">
+          <div className="w-full max-w-md max-h-[95vh] overflow-hidden rounded-xl bg-white shadow-xl">
+            <div className="flex items-start justify-between gap-4 border-b border-gray-200 p-4 sm:p-6">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">
                   Confirmar venda
@@ -828,25 +913,25 @@ function Vendas() {
                   setModalAberto(false)
                 }
                 disabled={finalizando}
-                className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition disabled:opacity-50"
+                className="shrink-0 w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition disabled:opacity-50"
               >
                 <FiX size={21} />
               </button>
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(95vh-90px)]">
               <div className="space-y-3 max-h-60 overflow-y-auto">
                 {carrinho.map((item) => (
                   <div
                     key={item.produtoId}
-                    className="flex items-center justify-between"
+                    className="flex items-start justify-between gap-4"
                   >
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-900 break-words">
                         {item.nome}
                       </p>
 
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 mt-1">
                         {item.quantidade} x{" "}
                         {formatarPreco(
                           item.preco
@@ -854,7 +939,7 @@ function Vendas() {
                       </p>
                     </div>
 
-                    <span className="text-sm font-semibold text-gray-900">
+                    <span className="shrink-0 text-sm font-semibold text-gray-900">
                       {formatarPreco(
                         item.subtotal
                       )}
@@ -863,19 +948,19 @@ function Vendas() {
                 ))}
               </div>
 
-              <div className="border-t border-gray-200 mt-5 pt-5 flex items-center justify-between">
+              <div className="border-t border-gray-200 mt-5 pt-5 flex items-center justify-between gap-4">
                 <span className="font-medium text-gray-700">
                   Total
                 </span>
 
-                <span className="text-xl font-bold text-gray-900">
+                <span className="text-xl font-bold text-gray-900 text-right">
                   {formatarPreco(
                     calcularTotal()
                   )}
                 </span>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
                 <button
                   onClick={() =>
                     setModalAberto(false)
