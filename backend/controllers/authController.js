@@ -55,6 +55,37 @@ const login = async (req, res) => {
   }
 };
 
+// DIAGNÓSTICO TEMPORÁRIO
+const testeLogin = async (req, res) => {
+  try {
+    const usuario = await Usuario.findOne({ usuario: "admin" });
+
+    if (!usuario) {
+      return res.status(200).json({
+        encontrado: false,
+        senhaCorreta: false,
+        banco: require("mongoose").connection.name,
+      });
+    }
+
+    const senhaCorreta = await bcrypt.compare(
+      "123456",
+      usuario.senha
+    );
+
+    return res.status(200).json({
+      encontrado: true,
+      senhaCorreta,
+      banco: require("mongoose").connection.name,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      erro: error.message,
+    });
+  }
+};
+
 module.exports = {
   login,
+  testeLogin,
 };
