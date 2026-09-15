@@ -6,6 +6,7 @@ import Produtos from "./pages/Produtos";
 import Estoque from "./pages/Estoque";
 import Vendas from "./pages/Vendas";
 import Historico from "./pages/Historico";
+import Turnos from "./pages/Turnos";
 
 import Layout from "./components/Layout";
 import PrivateRoute from "./components/PrivateRoute";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/produtos" element={<Produtos />} />
           <Route path="/estoque" element={<Estoque />} />
           <Route path="/vendas" element={<Vendas />} />
+          <Route path="/turnos" element={<Turnos />} />
           <Route path="/historico" element={<Historico />} />
         </Route>
       </Routes>

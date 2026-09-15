@@ -9,10 +9,24 @@ const authRoutes = require("./routes/authRoutes");
 const protegerRota = require("./middleware/authMiddleware");
 const fornecedorRoutes = require("./routes/fornecedorRoutes");
 const vendaRoutes = require("./routes/vendaRoutes");
+const turnoRoutes = require("./routes/turnoRoutes");
+
+
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+    ],
+  })
+);
 app.use(express.json());
 
 connectDB();
@@ -21,7 +35,7 @@ mongoose.connection.on("connected", () => {
   console.log("Banco usado pelo servidor:", mongoose.connection.name);
 });
 
-
+app.use("/api/turnos", turnoRoutes);
 app.use("/api/produtos", produtoRoutes);
 app.use("/api/movimentacoes", movimentacaoRoutes);
 app.use("/api/auth", authRoutes);

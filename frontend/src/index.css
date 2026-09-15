@@ -1,1 +1,119 @@
 @import "tailwindcss";
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff;
+    color: #111827;
+    font-size: 11pt;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .print-report,
+  .print-report * {
+    background: #fff !important;
+    color: #111827 !important;
+    border-color: #d1d5db !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-report {
+    display: block !important;
+    padding: 0 !important;
+    max-width: 100%;
+    color: #111827;
+    background: #fff !important;
+  }
+
+  .print-report table,
+  .print-report th,
+  .print-report td,
+  .print-report tr {
+    border-color: #d1d5db !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-conferencia-cards,
+  .print-card-list,
+  .print-card-item {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-conferencia-tabela {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .print-conferencia-tabela table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 9.5pt;
+    page-break-inside: auto;
+  }
+
+  .print-conferencia-tabela th,
+  .print-conferencia-tabela td {
+    padding: 6px 6px;
+    vertical-align: top;
+    word-break: break-word;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-assinatura {
+    display: block !important;
+    margin-top: 20px;
+    page-break-inside: avoid;
+  }
+
+  .print-assinatura .grid {
+    display: grid !important;
+  }
+
+  .print-assinatura .border-b {
+    border-bottom: 1px solid #374151 !important;
+  }
+
+  .print-report .rounded-2xl,
+  .print-report .rounded-xl,
+  .print-report .border,
+  .print-report .border-gray-200,
+  .print-report .bg-gray-50 {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-report .bg-gray-50 {
+    background: #fff !important;
+  }
+}
+
+.print-report {
+  display: block;
+}
+
+.print-conferencia-cards {
+  display: block;
+}
+
+.print-card-item {
+  background: #fff;
+}

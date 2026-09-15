@@ -9,6 +9,7 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+  FiClock,
 } from "react-icons/fi";
 
 import logo from "../../public/logopng.png";
@@ -31,12 +32,12 @@ function Layout() {
     { name: "Produtos", path: "/produtos", icon: FiPackage },
     { name: "Estoque", path: "/estoque", icon: FiRefreshCw },
     { name: "Vendas", path: "/vendas", icon: FiShoppingCart },
+    { name: "Turnos", path: "/turnos", icon: FiClock },
     { name: "Histórico", path: "/historico", icon: FiClipboard },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Overlay mobile */}
       {menuAberto && (
         <div
           onClick={fecharMenu}
@@ -44,22 +45,11 @@ function Layout() {
         />
       )}
 
-      {/* Sidebar */}
       <aside
-        className={`
-          fixed md:static
-          inset-y-0 left-0
-          z-50
-          w-64
-          bg-white
-          border-r border-gray-200
-          flex flex-col
-          transform transition-transform duration-300
-          ${menuAberto ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0
-        `}
+        className={`no-print fixed md:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ${
+          menuAberto ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
       >
-        {/* Logo */}
         <div className="h-20 flex items-center px-6 border-b border-gray-200">
           <img
             src={logo}
@@ -77,7 +67,6 @@ function Layout() {
             </p>
           </div>
 
-          {/* Fechar menu no celular */}
           <button
             onClick={fecharMenu}
             className="ml-auto md:hidden text-gray-500 hover:text-gray-900"
@@ -86,7 +75,6 @@ function Layout() {
           </button>
         </div>
 
-        {/* Menu */}
         <nav className="flex-1 p-4 overflow-y-auto">
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">
             Menu
@@ -118,7 +106,6 @@ function Layout() {
           </div>
         </nav>
 
-        {/* Sair */}
         <div className="p-4 border-t border-gray-200">
           <button
             onClick={handleLogout}
@@ -131,10 +118,8 @@ function Layout() {
         </div>
       </aside>
 
-      {/* Conteúdo */}
       <div className="flex-1 min-w-0">
-        {/* Header mobile */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 md:hidden">
+        <header className="no-print h-16 bg-white border-b border-gray-200 flex items-center px-4 md:hidden">
           <button
             onClick={() => setMenuAberto(true)}
             className="p-2 -ml-2 rounded-lg text-gray-600 hover:bg-gray-100"
