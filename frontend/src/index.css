@@ -18,6 +18,16 @@
     margin: 0;
   }
 
+  html,
+  body,
+  #root {
+    width: 72mm !important;
+    max-width: 72mm !important;
+    min-width: 72mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   * {
     box-shadow: none !important;
     text-shadow: none !important;
@@ -41,10 +51,11 @@
 
   .relatorio-termico {
     display: block !important;
-    width: 66mm !important;
-    max-width: 66mm !important;
-    margin: 0 3mm !important;
-    padding: 3mm 0 !important;
+    width: 72mm !important;
+    max-width: 72mm !important;
+    margin: 0 !important;
+    padding: 2mm 3mm !important;
+    box-sizing: border-box !important;
     background: #fff !important;
     color: #000 !important;
     font-family: Arial, sans-serif !important;
