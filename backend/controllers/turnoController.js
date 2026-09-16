@@ -179,14 +179,19 @@ const iniciarTurno = async (req, res) => {
       quantidade: produto.quantidade,
     }));
 
-    const funcionario = req.usuario?.usuario || "Funcionário";
-    const nomeTurno = (
-      req.body?.nome || req.body?.nomeTurno || ""
-    ).trim();
+    const funcionario = typeof req.body?.funcionario === "string"
+      ? req.body.funcionario.trim()
+      : "";
+
+    if (!funcionario) {
+      return res.status(400).json({
+        message: "Informe o nome do funcionário.",
+      });
+    }
 
     const turno = await Turno.create({
       status: "aberto",
-      nome: nomeTurno || `Turno ${new Date().toLocaleDateString("pt-BR")}`,
+      nome: "",
       funcionario,
       abertoEm: new Date(),
       estoqueInicial,
@@ -212,8 +217,24 @@ const turnoAtual = async (req, res) => {
       status: "aberto",
     }).sort({ abertoEm: -1 });
 
+    if (!turno) {
+      return res.status(200).json({
+        turno: null,
+      });
+    }
+
+    const conferenciaAtual = await montarConferenciaDoTurno(turno, new Date());
+    const turnoAtualizado = turno.toObject();
+
+    turnoAtualizado.resumo = {
+      totalVendas: conferenciaAtual.totalVendas,
+      quantidadeItensVendidos: conferenciaAtual.quantidadeItensVendidos,
+      totalEntradas: conferenciaAtual.totalEntradas,
+      totalSaidas: conferenciaAtual.totalSaidas,
+    };
+
     return res.status(200).json({
-      turno,
+      turno: turnoAtualizado,
     });
   } catch (error) {
     console.error("Erro ao buscar turno:", error);

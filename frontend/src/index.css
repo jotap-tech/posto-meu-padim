@@ -6,7 +6,7 @@
 
 @media print {
   @page {
-    size: 72mm 297mm;
+    size: 72mm auto;
     margin: 0;
   }
 
@@ -94,11 +94,19 @@
     margin: 2mm 0;
   }
 
-  .relatorio-termico-tabela {
+  .relatorio-termico-tabelas {
+    display: flex;
+    align-items: flex-start;
+    gap: 1mm;
     width: 100%;
+  }
+
+  .relatorio-termico-tabela {
+    width: calc((100% - 1mm) / 2);
+    min-width: 0;
     border-collapse: collapse;
     table-layout: fixed;
-    font-size: 9px;
+    font-size: 8px;
     color: #000 !important;
     background: #fff !important;
     page-break-inside: auto;
@@ -106,11 +114,11 @@
 
   .relatorio-termico-tabela th,
   .relatorio-termico-tabela td {
-    padding: 1mm 0.5mm;
+    padding: 0.65mm 0.3mm;
     color: #000 !important;
     background: #fff !important;
     border: 0;
-    line-height: 1.2;
+    line-height: 1.1;
     text-align: right;
     white-space: nowrap;
     overflow: hidden;
@@ -127,6 +135,7 @@
   .relatorio-termico-tabela th {
     border-bottom: 1px dashed #000;
     font-weight: 700;
+    font-size: 7.5px;
   }
 
   .relatorio-termico-tabela tr:last-child td {
@@ -134,12 +143,17 @@
   }
 
   .relatorio-termico-coluna-produto {
-    width: 52%;
+    width: 55%;
   }
 
   .relatorio-termico-tabela th:not(:first-child),
   .relatorio-termico-tabela td:not(:first-child) {
-    width: 12%;
+    width: 11.25%;
+  }
+
+  .relatorio-termico-vazio {
+    margin: 0;
+    font-size: 9px;
   }
 
   .relatorio-termico-assinatura {

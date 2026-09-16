@@ -15,7 +15,7 @@ function Turnos() {
   const [turnoAtual, setTurnoAtual] = useState(null);
   const [turnosFechados, setTurnosFechados] = useState([]);
   const [turnoExibido, setTurnoExibido] = useState(null);
-  const [nomeTurno, setNomeTurno] = useState("");
+  const [nomeFuncionario, setNomeFuncionario] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
   const [executando, setExecutando] = useState(false);
@@ -49,21 +49,7 @@ function Turnos() {
     });
   };
 
-  const getUsuarioLogado = () => {
-    const token = localStorage.getItem("token");
-
-    if (!token) return "Funcionário";
-
-    try {
-      const payload = token.split(".")[1];
-      const decoded = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-      return decoded.usuario || "Funcionário";
-    } catch {
-      return "Funcionário";
-    }
-  };
-
-  const carregarTurnos = async () => {
+  const carregarTurnos = async (manterConferenciaAberta = false) => {
     try {
       const [turnoAtualResponse, turnosFechadosResponse] = await Promise.all([
         api.get("/turnos/atual"),
@@ -72,7 +58,9 @@ function Turnos() {
 
       setTurnoAtual(turnoAtualResponse.data?.turno || null);
       setTurnosFechados(turnosFechadosResponse.data?.turnos || []);
-      setTurnoExibido(null);
+      if (!manterConferenciaAberta) {
+        setTurnoExibido(null);
+      }
     } catch (error) {
       console.error("Erro ao carregar turnos:", error);
       mostrarToast(
@@ -89,12 +77,19 @@ function Turnos() {
   }, []);
 
   const iniciarTurno = async () => {
+    const funcionario = nomeFuncionario.trim();
+
+    if (!funcionario) {
+      mostrarToast("Informe o nome do funcionário.", "erro");
+      return;
+    }
+
     try {
       setExecutando(true);
       await api.post("/turnos/iniciar", {
-        nome: nomeTurno.trim(),
+        funcionario,
       });
-      setNomeTurno("");
+      setNomeFuncionario("");
       await carregarTurnos();
       mostrarToast("Turno iniciado com sucesso.");
     } catch (error) {
@@ -120,7 +115,7 @@ function Turnos() {
         setTurnoExibido(turnoFechado);
       }
 
-      await carregarTurnos();
+      await carregarTurnos(true);
       mostrarToast("Turno fechado com sucesso.");
     } catch (error) {
       console.error("Erro ao fechar turno:", error);
@@ -159,7 +154,51 @@ function Turnos() {
     return { texto: `${valor} falta`, classe: "text-red-700 font-semibold" };
   };
 
-  const nomeTurnoRelatorio = turnoExibido?.nome || "Turno sem nome";
+  const conferenciaTermicaEsquerda = conferencia.slice(
+    0,
+    Math.ceil(conferencia.length / 2)
+  );
+  const conferenciaTermicaDireita = conferencia.slice(
+    Math.ceil(conferencia.length / 2)
+  );
+
+  const renderTabelaTermica = (itens, lado) => (
+    <table className="relatorio-termico-tabela" key={`termica-${lado}`}>
+      <colgroup>
+        <col className="relatorio-termico-coluna-produto" />
+        <col />
+        <col />
+        <col />
+        <col />
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col">PRODUTO</th>
+          <th scope="col">INI</th>
+          <th scope="col">ENT</th>
+          <th scope="col">SAI</th>
+          <th scope="col">FIM</th>
+        </tr>
+      </thead>
+      <tbody>
+        {itens.length === 0 ? (
+          <tr>
+            <td colSpan="5">&nbsp;</td>
+          </tr>
+        ) : (
+          itens.map((item) => (
+            <tr key={`termico-${lado}-${item.produto}-${item.nome}`}>
+              <td title={item.nome}>{item.nome}</td>
+              <td>{item.estoqueInicial}</td>
+              <td>{item.entradas}</td>
+              <td>{Number(item.vendas || 0) + Number(item.saidas || 0)}</td>
+              <td>{item.estoqueAtual}</td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  );
 
   if (carregando) {
     return (
@@ -200,15 +239,10 @@ function Turnos() {
             <p className="mt-1 text-sm text-gray-500">Relatório gerado ao fechamento do turno</p>
           </div>
 
-          <div className="mb-6 rounded-xl border border-gray-200 bg-gray-50 p-4">
-            <p className="text-xs uppercase tracking-wide text-gray-500">Nome do turno</p>
-            <p className="mt-2 text-lg font-bold text-gray-900">{nomeTurnoRelatorio}</p>
-          </div>
-
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 mb-6">
             <div className="rounded-xl bg-gray-50 border border-gray-200 p-4">
               <p className="text-xs uppercase tracking-wide text-gray-500">Funcionário</p>
-              <p className="mt-2 text-base font-semibold text-gray-900">{turnoExibido.funcionario || getUsuarioLogado()}</p>
+              <p className="mt-2 text-base font-semibold text-gray-900">{turnoExibido.funcionario || "Funcionário"}</p>
             </div>
 
             <div className="rounded-xl bg-gray-50 border border-gray-200 p-4">
@@ -349,49 +383,23 @@ function Turnos() {
           </header>
 
           <div className="relatorio-termico-dados">
-            <p><strong>Turno:</strong> {nomeTurnoRelatorio}</p>
-            <p><strong>Funcionário:</strong> {turnoExibido.funcionario || getUsuarioLogado()}</p>
+            <p><strong>Funcionário:</strong> {turnoExibido.funcionario || "Funcionário"}</p>
             <p><strong>Abertura:</strong> {formatarData(turnoExibido.abertoEm)}</p>
             <p><strong>Fechamento:</strong> {formatarData(turnoExibido.fechadoEm)}</p>
           </div>
 
           <div className="relatorio-termico-separador" />
 
-          <table className="relatorio-termico-tabela">
-            <colgroup>
-              <col className="relatorio-termico-coluna-produto" />
-              <col />
-              <col />
-              <col />
-              <col />
-            </colgroup>
-            <thead>
-              <tr>
-                <th scope="col">PRODUTO</th>
-                <th scope="col">INI</th>
-                <th scope="col">ENT</th>
-                <th scope="col">SAI</th>
-                <th scope="col">FIM</th>
-              </tr>
-            </thead>
-            <tbody>
-              {conferencia.length === 0 ? (
-                <tr>
-                  <td colSpan="5">Nenhum produto</td>
-                </tr>
-              ) : (
-                conferencia.map((item) => (
-                  <tr key={`termico-${item.produto}-${item.nome}`}>
-                    <td title={item.nome}>{item.nome}</td>
-                    <td>{item.estoqueInicial}</td>
-                    <td>{item.entradas}</td>
-                    <td>{Number(item.vendas || 0) + Number(item.saidas || 0)}</td>
-                    <td>{item.estoqueAtual}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+          <div className="relatorio-termico-tabelas">
+            {conferencia.length === 0 ? (
+              <p className="relatorio-termico-vazio">Nenhum produto</p>
+            ) : (
+              <>
+                {renderTabelaTermica(conferenciaTermicaEsquerda, "esquerda")}
+                {renderTabelaTermica(conferenciaTermicaDireita, "direita")}
+              </>
+            )}
+          </div>
 
           <div className="relatorio-termico-separador" />
 
@@ -423,15 +431,16 @@ function Turnos() {
           <p className="mt-2 text-sm text-gray-500">Inicie um novo turno para começar a conferência de estoque.</p>
 
           <div className="mt-5">
-            <label htmlFor="nome-turno" className="block text-sm font-medium text-gray-700 mb-2">
-              Nome do turno
+            <label htmlFor="nome-funcionario" className="block text-sm font-medium text-gray-700 mb-2">
+              Nome do funcionário
             </label>
             <input
-              id="nome-turno"
+              id="nome-funcionario"
               type="text"
-              value={nomeTurno}
-              onChange={(e) => setNomeTurno(e.target.value)}
-              placeholder="Ex: Turno da manhã"
+              value={nomeFuncionario}
+              onChange={(e) => setNomeFuncionario(e.target.value)}
+              placeholder="Digite o nome do funcionário"
+              required
               className="w-full max-w-md px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
             />
           </div>
@@ -454,8 +463,7 @@ function Turnos() {
                   <FiClock size={16} />
                   Turno em andamento
                 </div>
-                <h2 className="mt-3 text-2xl font-bold text-gray-900">{turnoAtual.nome || "Turno sem nome"}</h2>
-                <p className="mt-2 text-sm text-gray-500">Funcionário: {turnoAtual.funcionario || getUsuarioLogado()}</p>
+                <p className="mt-3 text-sm text-gray-500">Funcionário: {turnoAtual.funcionario || "Funcionário"}</p>
                 <p className="mt-1 text-sm text-gray-500">Início: {formatarData(turnoAtual.abertoEm)}</p>
               </div>
 
@@ -516,8 +524,7 @@ function Turnos() {
               >
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="text-base font-semibold text-gray-900">{turno.nome || "Turno sem nome"}</p>
-                    <p className="text-sm text-gray-500">{turno.funcionario || "Funcionário"}</p>
+                    <p className="text-base font-semibold text-gray-900">{turno.funcionario || "Funcionário"}</p>
                     <p className="text-sm text-gray-500">{formatarData(turno.abertoEm)} até {formatarData(turno.fechadoEm)}</p>
                   </div>
 
