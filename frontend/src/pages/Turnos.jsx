@@ -171,10 +171,11 @@ function Turnos() {
 
   if (turnoExibido) {
     return (
-      <div className="print-report p-4 sm:p-6 lg:p-8">
+      <div className="turno-report-page">
         <Toast aberto={toast.aberto} tipo={toast.tipo} mensagem={toast.mensagem} />
 
-        <div className="no-print mb-6 flex items-center justify-between gap-3">
+        <div className="print-report-screen p-4 sm:p-6 lg:p-8">
+          <div className="no-print mb-6 flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={voltarParaControle}
@@ -191,7 +192,7 @@ function Turnos() {
             <FiPrinter size={18} />
             Imprimir relatório
           </button>
-        </div>
+          </div>
 
         <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6 shadow-sm">
           <div className="mb-6">
@@ -339,6 +340,68 @@ function Turnos() {
             </div>
           </div>
         </div>
+        </div>
+
+        <section className="relatorio-termico" aria-label="Relatório térmico da conferência de turno">
+          <header className="relatorio-termico-cabecalho">
+            <h1>POSTO MEU PADIM</h1>
+            <h2>CONFERÊNCIA DE TURNO</h2>
+          </header>
+
+          <div className="relatorio-termico-dados">
+            <p><strong>Turno:</strong> {nomeTurnoRelatorio}</p>
+            <p><strong>Funcionário:</strong> {turnoExibido.funcionario || getUsuarioLogado()}</p>
+            <p><strong>Abertura:</strong> {formatarData(turnoExibido.abertoEm)}</p>
+            <p><strong>Fechamento:</strong> {formatarData(turnoExibido.fechadoEm)}</p>
+          </div>
+
+          <div className="relatorio-termico-separador" />
+
+          <table className="relatorio-termico-tabela">
+            <colgroup>
+              <col className="relatorio-termico-coluna-produto" />
+              <col />
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">PRODUTO</th>
+                <th scope="col">INI</th>
+                <th scope="col">ENT</th>
+                <th scope="col">SAI</th>
+                <th scope="col">FIM</th>
+              </tr>
+            </thead>
+            <tbody>
+              {conferencia.length === 0 ? (
+                <tr>
+                  <td colSpan="5">Nenhum produto</td>
+                </tr>
+              ) : (
+                conferencia.map((item) => (
+                  <tr key={`termico-${item.produto}-${item.nome}`}>
+                    <td title={item.nome}>{item.nome}</td>
+                    <td>{item.estoqueInicial}</td>
+                    <td>{item.entradas}</td>
+                    <td>{Number(item.vendas || 0) + Number(item.saidas || 0)}</td>
+                    <td>{item.estoqueAtual}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+
+          <div className="relatorio-termico-separador" />
+
+          <footer className="relatorio-termico-assinatura">
+            <p>Responsável:</p>
+            <div className="relatorio-termico-linha" />
+            <p>Assinatura:</p>
+            <div className="relatorio-termico-linha" />
+          </footer>
+        </section>
       </div>
     );
   }
